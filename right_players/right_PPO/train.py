@@ -13,25 +13,24 @@ from env import make_env
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
 
+# Create the environment with the custom wrappers
 env = make_env()
-
 
 # Define the custom policy kwargs with the custom CNN and device
 policy_kwargs = {
-    'features_extractor_class': CustomCNN,
-    'features_extractor_kwargs': {'features_dim': 512},
-    'normalize_images': False
+    'features_extractor_class': CustomCNN, # Use the custom CNN feature extractor which is more complex than the default one
+    'features_extractor_kwargs': {'features_dim': 512},  # The dimension of the extracted features
+    'normalize_images': False # Do not normalize the images
 }
 
 
 # Define the path to save the best model
-save_path = "./models/pong_right"
+save_path = "./models/pong_right" # The model will be saved in a folder called 'models' in the current directory
 
 # Define the TensorBoard log directory
-tensorboard_log_dir = "./tensorboard_logs/pong_right"
+tensorboard_log_dir = "./tensorboard_logs/pong_right" # The logs will be saved in a folder called 'tensorboard_logs' in the current directory
 
-
-
+# Load the pretrained agent or instantiate a new agent
 if config.pretrained:
     # Load the pretrained agent
     model = PPO.load("./ppo_pong_right_side_v1.zip", env=env, device=device, tensorboard_log=tensorboard_log_dir)
